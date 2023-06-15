@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<style>
+			.canvas {
+				background-color: #e9e9e9;
+			}
+
+			.save {
+				margin: 0 20px;
+			}
+
+			.operateButton {
+				margin-top: 30px;
+				margin-bottom: 10px;
+				display: flex;
+			}
+
+			.swatches {
+				width: 20px;
+				height: 20px;
+				border: 1px solid #000;
+				margin: 0 10px;
+				background-color: #000000;
+				cursor: pointer;
+			}
+
+			.white {
+				background-color: #ffffff;
+			}
+
+			.red {
+				background-color: #ff000022;
+			}
+
+			.yellow {
+				background-color: #ffff00;
+			}
+
+			.bule {
+				background-color: #0000ff;
+			}
+
+			.green {
+				background-color: #00ff00;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="operateButton">
+			<input type="button" value="重置" id="reset" class="reset" />
+			<input type="button" value="保存" id="save" class="save" />
+			<div class="swatches" id="balckBox"></div>
+			<div class="swatches white" id="whiteBox"></div>
+			<div class="swatches red" id="redBox"></div>
+			<div class="swatches green" id="greenBox"></div>
+			<div class="swatches yellow" id="yellowBox"></div>
+			<div class="swatches bule" id="buleBox"></div>
+		</div>
+		<canvas id="canvas" class="canvas" width="600" height="600">
+			<div>浏览器不支持</div>
+		</canvas>
+		<script>
+			let content = document.getElementById("canvas")
+			let ctx = content.getContext("2d")
+
+			if (ctx) {
+				ctx.moveTo(100, 100)
+				ctx.lineTo(200, 100)
+				ctx.strokeStyle = 'red'
+				ctx.stroke()
+
+				ctx.strokeStyle = 'red'
+				ctx.moveTo(100, 200)
+				ctx.lineTo(200, 200)
+				ctx.stroke()
+
+				let drawFlag = false;
+				let startPoint = {},
+					toPoint = {};
+
+				content.onmousedown = (res) => {
+					drawFlag = true
+					startPoint = {
+						x: res.offsetX,
+						y: res.offsetY,
+					}
+				}
+
+				content.onmousemove = (res) => {
+					toPoint = {
+						x: res.offsetX,
+						y: res.offsetY,
+					}
+					if (drawFlag) {
+						ctx.beginPath()
+						ctx.moveTo(startPoint.x, startPoint.y)
+						drawLine(startPoint, toPoint)
+						startPoint = toPoint
+					}
+				}
+
+				function drawLine(startPoint, toPoint) {
+					ctx.lineTo(toPoint.x, toPoint.y)
+					ctx.stroke()
+				}
+
+				content.onmouseup = (res) => {
+					drawFlag = false
+				}
+
+				document.getElementById("reset").onclick = (res) => {
+					ctx.clearRect(0, 0, content.width, content.height)
+				}
+
+				document.getElementById("save").onclick = (res) => {
+					const url = content.toDataURL("image/jpg");
+					const a = document.createElement("a");
+					a.href = url
+					a.download = "画板"
+					a.target = "_blank"
+					a.click()
+				}
+
+				document.getElementById("balckBox").onclick = (res) => {
+					ctx.strokeStyle = "#000000";
+				}
+
+				document.getElementById("whiteBox").onclick = (res) => {
+					ctx.strokeStyle = "#ffffff";
+				}
+
+				document.getElementById("redBox").onclick = (res) => {
+					ctx.strokeStyle = "#220000";
+				}
+
+				document.getElementById("greenBox").onclick = (res) => {
+					ctx.strokeStyle = "#00ff00";
+				}
+
+				document.getElementById("yellowBox").onclick = (res) => {
+					ctx.strokeStyle = "#ffff00";
+				}
+
+				document.getElementById("buleBox").onclick = (res) => {
+					ctx.strokeStyle = "#0000ff";
+				}
+			} else {
+				console.log("浏览器不支持");
+			}
+		</script>
+	</body>
+</html>
