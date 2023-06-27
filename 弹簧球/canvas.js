@@ -49,15 +49,24 @@ class Rect {
 let newBall = new Ball(200, 100, 15, "red", 10, 10);
 let newRect = new Rect(195, 115, 10, 30, "#303333");
 
-let codeFlag = false;
+let codeFlag = false,
+  SpaceStartTime = 0,
+  SpaceEndTime = 0;
 document.addEventListener("keydown", (e) => {
-  if (e.code == "Space"&&!codeFlag) {
-    
+  if (e.code == "Space" && !codeFlag) {
+    console.log("按下了");
+    codeFlag = true;
+    SpaceStartTime = new Date().getTime();
   }
 });
 
 document.addEventListener("keyup", (e) => {
-  if (e.code == "Space"&&!codeFlag) {
+  if (e.code == "Space" && codeFlag) {
+    console.log("送开了");
+    codeFlag = false;
+    SpaceEndTime = new Date().getTime();
+    console.log(SpaceStartTime, SpaceEndTime);
+    console.log("时间差异（毫秒）：", SpaceEndTime - SpaceStartTime);
   }
 });
 
