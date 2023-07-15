@@ -5,7 +5,7 @@ let gameStatus = false,
 	awardNum = 5;
 
 myCanvas.width = window.innerWidth;
-myCanvas.height = 3000;
+myCanvas.height = 6000;
 
 class Vector {
 	constructor(x, y) {
@@ -75,11 +75,14 @@ class Ball {
 	//绘制小球
 	draw() {
 		ctx.beginPath();
-		//碰撞变色
-		// ctx.fillStyle = this.colliding ? "#A9D9D0" : this.color;
 
-		ctx.fillStyle = this.color;
-		ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+
+		var image = new Image();
+		image.src = 'ball.png';
+		ctx.drawImage(image, this.x, this.y, 100, 100);
+
+		// ctx.fillStyle = this.color;
+		// ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 	//小球动作更新
@@ -296,22 +299,13 @@ let obstacleBallList = [
 		new obstacleBall(450, 2600, 30, "#000000", 40),
 		new obstacleBall(800, 2600, 30, "#000000", 40),
 	],
-	obstacleLineList = [new obstacleLine(-100, 0, 50, 0), new obstacleLine(-100, 0, 50, 0), new obstacleLine(-100, 0, 50,
-		0)];
+	obstacleLineList = [new obstacleLine(-100, 0, 100, 0)];
 (function() {
-	obstacleLineList[0].x = 200;
-	obstacleLineList[0].y = 300;
-	obstacleLineList[0].rotation = 30 * Math.PI / 180;
-
-	obstacleLineList[1].x = 400;
-	obstacleLineList[1].y = 400;
-	obstacleLineList[1].rotation = 45 * Math.PI / 180;
-
-	obstacleLineList[2].x = 600;
-	obstacleLineList[2].y = 600;
-	obstacleLineList[2].rotation = -20 * Math.PI / 180;
+	obstacleLineList[0].x = 820;
+	obstacleLineList[0].y = 1200;
+	obstacleLineList[0].rotation = -65 * Math.PI / 180;
 })()
-let myball = new Ball(100, 100, 50, '#D8B08C', 10, 10, 10)
+let myball = new Ball(600, 600, 50, '#D8B08C', 5, 5, 5)
 
 function MathRandom(start, end) {
 	return Math.round(Math.random() * (end - start) + start)
@@ -323,21 +317,22 @@ myCanvas.addEventListener("click", () => {
 })
 
 function drawAward() {
-	let rectHeight = 60
 	ctx.beginPath();
 	ctx.fillStyle = 'red';
 	ctx.font = '40px border';
-	ctx.fillRect(myCanvas.width / awardNum * 0, myCanvas.height - rectHeight, 10, rectHeight)
 	ctx.fillText("一等奖", myCanvas.width / awardNum * 0 + 20, myCanvas.height - 20);
-	ctx.fillRect(myCanvas.width / awardNum * 1, myCanvas.height - rectHeight, 10, rectHeight)
 	ctx.fillText("二等奖", myCanvas.width / awardNum * 1 + 20, myCanvas.height - 20);
-	ctx.fillRect(myCanvas.width / awardNum * 2, myCanvas.height - rectHeight, 10, rectHeight)
 	ctx.fillText("三等奖", myCanvas.width / awardNum * 2 + 20, myCanvas.height - 20);
-	ctx.fillRect(myCanvas.width / awardNum * 3, myCanvas.height - rectHeight, 10, rectHeight)
 	ctx.fillText("四等奖", myCanvas.width / awardNum * 3 + 20, myCanvas.height - 20);
-	ctx.fillRect(myCanvas.width / awardNum * 4, myCanvas.height - rectHeight, 10, rectHeight)
 	ctx.fillText("五等奖", myCanvas.width / awardNum * 4 + 20, myCanvas.height - 20);
 	ctx.closePath();
+}
+
+function drawImg() {
+	var image = new Image();
+	image.src = 'obstacle.png';
+	ctx.beginPath();
+	ctx.drawImage(image, 500, 1900, 60, 150);
 }
 
 function animal() {
@@ -350,6 +345,7 @@ function animal() {
 		res.draw();
 	});
 	drawAward()
+	drawImg()
 	requestAnimationFrame(animal);
 }
 
